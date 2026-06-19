@@ -1,3 +1,201 @@
+# FUNCIONES - TPI --------------------------------------------------------------------------------------
+
+# FUNCION PARA VALIDAR ENTRADAS 'INT'
+def validar_numero(mensaje, permitir_cero=True):
+    while True:
+        try:
+            num = int(input(mensaje))
+            if num<0:
+                print("ERROR. Debe ingresar un numero mayor a cero.")
+                print("")
+                continue
+            return num
+        except ValueError:
+            print("ERROR. Debe ingresar un numero valido.")
+            print("")
+
+
+# FUNCION PARA VALIDAR ENTRADAS 'STRING'
+def validar_texto(mensaje):
+    while True:
+        try:
+            texto =  str(input(mensaje).capitalize())
+            if texto == "":
+                print("ERROR. No puede estar vacio.")
+                print("")
+                continue
+            return texto
+        except ValueError:
+            print("ERROR. Debe ingresar letras validas.")
+            print("")
+
+
+# FUNCION PARA BUSCAR UN PAIS
+# EXACTO
+def buscar_paises(paises, nombre):
+    if not paises:
+        print("ERROR. No hay paises almacenados.")
+        return
+    nombre_limpio = text = nombre.strip().capitalize()
+    for h in paises:
+        if h["Pais"].strip().capitalize() == nombre_limpio:
+            return h
+    return None
+# PARCIAL
+def buscar_pais_parcial(paises):
+    if not paises:
+        print("ERROR. No hay paises almacenados.")
+        return
+    nombre = validar_texto("Ingrese nombre o parte del nombre: ").lower()
+    resultados = [p for p in paises if nombre in p["Pais"]]
+    if not resultados:
+        print(f"ERROR. No se encontraron países que coincidan con '{nombre}'.")
+    else:
+        print(resultados)
+
+# FUNCION PARA MOSTRAR EL MENU
+def menu():
+    print("""
+    - MENU -
+    1. Agregar un país.
+    2. Actualizar un país.
+    3. Buscar un país.
+    4. Filtrar países por un dato.
+    5. Ordenar países por un dato.
+    6. Mostrar estadísticas.
+    7. Salir.
+    """)
+
+# Funcion para agregar un país con todos los datos necesarios
+def agregar_paises(paises):
+    print("")
+    print("-"*50)
+    print("")
+    while True:
+        try:
+            nombre = validar_texto("Ingresa el nombre del pais: ").capitalize()
+            if buscar_paises(paises, nombre) is not None:
+                raise ValueError(f"ERROR. El pais '{nombre}' ya existe en el almacenado anteriormente.")
+            poblacion = validar_numero("Poblacion: ", permitir_cero=False)
+            superficie = validar_numero("Superficie en km²: ", permitir_cero=False)
+            continente = validar_texto(f"¿A que continente pertenece {nombre}?: ")
+            nuevo_pais = {"Pais": nombre, "Poblacion": poblacion, "Superficie": superficie, "Continente": continente}
+            paises.append(nuevo_pais)
+            print(f"¡'{nombre}' agregado con éxito al catálogo!")
+            return
+        except ValueError as e:
+            print(f"ERROR inesperado. {e}")
+        
+
+# Funcion para actualizar los datos de Población y Superficie de un País
+def actualizar_paises(paises):
+    print("")
+    print("-"*50)
+    print("")
+    if len(paises) == 0:
+        print("")
+        print("ERROR. No se ha almacenado ningun pais. Ingrese a la opcion 1.")
+        print("")
+        return
+    else:
+        nombre = validar_texto("¿Qué pais desea actualizar?: ").capitalize()
+        pais_encontrado = buscar_paises(paises, nombre)
+        if pais_encontrado is None:
+            print(f"El pais '{nombre}' no se encuentra almacenado.")
+            return
+        else:
+            while True:
+                print("""
+                ¿Que dato desea actualizar?
+                1. Población.
+                2. Superficie.
+                """)
+                opcion = input("Ingresa una opción (1-3): ")
+                try:
+                    if not opcion:
+                        raise ValueError("ERROR. La opción no puede estar vacía.")
+                    elif opcion == 1 or opcion == "1":
+                        poblacion = validar_numero(f"¿Qué poblacion tiene {nombre} actualmente?: ", permitir_cero=False)
+                        if pais_encontrado["Poblacion"] == poblacion:
+                            raise ValueError(f"{nombre} ya tiene esa cantidad de poblacion.")
+                        pais_encontrado["Poblacion"] = poblacion
+                        print("¡Poblacion actualizado correctamente!")
+                        return
+                    elif opcion == 2 or opcion == "2":
+                        superficie = validar_numero(f"¿Qué superficie tiene {nombre}?(en km²): ", permitir_cero=False)
+                        if pais_encontrado["Superficie"] == superficie:
+                            raise ValueError(f"{nombre} ya tiene esa superficie almacenada.")
+                        pais_encontrado["Superficie"] = superficie
+                        print("¡Superficie actualizada correctamente!")
+                        return
+                    else:
+                        print("ERROR. Debe ingresar una numero valido.")
+                        continue
+                except ValueError as e:
+                    print(f"ERROR inesperado. {e}")
+
+# Funcion para filtrar paises
+def filtrar_paises(paises): # Continente/Rango de población/Rango de superficie.
+    print("")
+    print("-"*50)
+    print("") 
+    pass
+
+def ordenar_paises(paises):
+    print("")
+    print("-"*50)
+    print("")
+    pass
+
+def mostrar_estadisticas(paises): # País con mayor y menor población/Promedio de población/Promedio de superficie/Cantidad de países por continente
+    print("")
+    print("-"*50)
+    print("") 
+    pass
+
+
+# MAIN - TPI ------------------------------------------------------------------------------------
+import csv
+with open("paises", "a", newline="", encoding="utf-8") as archivo:
+    cambio = csv.writer(archivo)
+
+    if __name__ == "__main__":
+        paises = []
+        print("="*100)
+        print("")
+        print("  BIENVENID@ AL ALMACENAMIENTO DE PAISES  ")
+        while True:
+            menu()
+            try:
+                opcion = input("Ingresa una opción (1-7): ").strip()
+                if not opcion:
+                    raise ValueError("ERROR. La opción no puede estar vacía.")
+                opcion = int(opcion)
+                match opcion:
+                    case 1: 
+                        agregar_paises(paises)
+                    case 2: 
+                        actualizar_paises(paises)
+                    case 3: 
+                        buscar_pais_parcial(paises)
+                    case 4: 
+                        filtrar_paises(paises)
+                    case 5: 
+                        ordenar_paises(paises)
+                    case 6: 
+                        mostrar_estadisticas(paises)
+                    case 7:
+                        print("")
+                        print("Saliendo del inventario... ")
+                        break
+                    case _:
+                        print("ERROR. Ingresa un número válido entre el 1 y 7.")
+                        print("")
+            except ValueError as e:
+                print(f"ERROR: Entrada inválida. {e}")
+                print("")
+        
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 import csv 
 
 def cargar_paises(nombre_archivo):
