@@ -46,12 +46,14 @@ def buscar_pais_parcial(paises):
     if not paises:
         print("ERROR. No hay paises almacenados.")
         return
-    nombre = validar_texto("Ingrese nombre o parte del nombre: ").lower()
-    resultados = [p for p in paises if nombre in p["Pais"]]
-    if not resultados:
-        print(f"ERROR. No se encontraron países que coincidan con '{nombre}'.")
     else:
-        print(resultados)
+        nombre = validar_texto("Ingrese nombre o parte del nombre: ").lower()
+        resultados = [p for p in paises if nombre in p["Pais"].lower()]
+        if not resultados:
+            print(f"ERROR. No se encontraron países que coincidan con '{nombre}'.")
+        else:
+            for pais in resultados:
+                print(f"- {pais['Pais']} ({pais['Continente']})")
 
 # FUNCION PARA MOSTRAR EL MENU
 def menu():
@@ -147,11 +149,106 @@ def ordenar_paises(paises):
     print("")
     pass
 
-def mostrar_estadisticas(paises): # País con mayor y menor población/Promedio de población/Promedio de superficie/Cantidad de países por continente
+# Funcion para ver cual es el pais con mayor o menor poblacion
+def mayor_menor_población(paises):
+    pais_mayor_poblacion = paises[0]
+    pais_menor_poblacion = paises[0]
+    for pais in paises:
+        if pais["Poblacion"] > pais_mayor_poblacion["Poblacion"]:
+            pais_mayor_poblacion = pais
+        if pais["Poblacion"] < pais_menor_poblacion["Poblacion"]:
+            pais_menor_poblacion = pais
+    print(f"El pais con mayor poblacion es {pais_mayor_poblacion}.")
+    print(f"El pais con menor poblacion es {pais_menor_poblacion}.")
+    return
+
+# Funcion para sacar el promedio de la poblacion
+def promedio_población(total_poblacion, paises):
+    promedio_poblacion = total_poblacion // len(paises)
+    print("")
+    print(f"Promedio de población: {promedio_poblacion}")
+    return
+
+# Funcion para sacar el promedio de la superficie
+def promedio_superficie(total_superficie, paises):
+    promedio_superficie = round(total_superficie / len(paises), 2)
+    print("")
+    print(f"Promedio de superficie: {promedio_superficie}")
+    return
+
+# Funcion para contar paises por continentes
+def paises_por_continente(paises):
+    Asia = 0
+    America = 0
+    Antartida = 0
+    Europa = 0
+    Oceania = 0
+    for pais in paises:
+        if pais["Continente"] == "Asia":
+            Asia += 1
+        elif pais["Continente"] == "America":
+            America += 1
+        elif pais["Continente"] == "Antartida":
+            Antartida += 1
+        elif pais["Continente"] == "Europa":
+            Europa += 1
+        elif pais["Continente"] == "Oceania":
+            Oceania += 1
+    print(f"""
+            - CANTIDAD DE PAISES POR CONTINENTE -
+            Asia = {Asia}
+            America = {America}
+            Antartida = {Antartida}
+            Europa = {Europa}
+            Oceania = {Oceania}
+            """)
+    return
+
+# Funcion para mostrar alguna estadistica
+def mostrar_estadisticas(paises): 
     print("")
     print("-"*50)
-    print("") 
-    pass
+    total_poblacion = 0
+    total_superficie = 0
+    if len(paises) == 0:
+        print("")
+        print("ERROR. No se ha almacenado ningun pais. Ingrese a la opcion 1.")
+        print("")
+        return
+    else:
+        for pais in paises:
+            total_superficie += pais["Superficie"]
+            total_poblacion += pais["Poblacion"]
+        while True:
+            print("""
+                ¿Que desea saber?
+                1. País con mayor y menor población.  
+                2. Promedio de población.
+                3. Promedio de superficie.  
+                4. Cantidad de países por continente. 
+                """) 
+            opcion = input("Ingresa una opción (1-4): ")
+            try:
+                if not opcion:
+                    raise ValueError("ERROR. La opción no puede estar vacía.")
+                elif opcion == 1 or opcion == "1":
+                    mayor_menor_población(paises)
+                    break
+                elif opcion == 2 or opcion == "2":
+                    promedio_población(total_poblacion, paises)
+                    break
+                elif opcion == 3 or opcion == "3":
+                    promedio_superficie(total_superficie, paises)
+                    break
+                elif opcion == 4 or opcion == "4":
+                    paises_por_continente(paises)
+                    break
+                else:
+                    print("ERROR. Debe ingresar una numero valido.")
+                    continue
+            except ValueError as e:
+                print(f"ERROR inesperado. {e}")
+
 
 
 # MAIN - TPI ------------------------------------------------------------------------------------
