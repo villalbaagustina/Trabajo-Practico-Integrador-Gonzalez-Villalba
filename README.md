@@ -19,8 +19,8 @@ A través de un menú interactivo, el usuario puede:
 
 ## Integrantes del Equipo
 
-- [Sebastian Gonzalez]
-- [Agustina Villalba]
+- Sebastian Gonzalez
+- Agustina Villalba
 
 ## Enlaces Obligatorios
 
