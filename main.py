@@ -57,7 +57,9 @@ def buscar_pais_parcial(paises):
             print(f"ERROR. No se encontraron países que coincidan con '{nombre}'.")
         else:
             for pais in resultados:
-                print(f"- Pais: {p['Nombre']} | Continente: {p['Continente']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
+                print(f"- Pais: {pais['Nombre']} | Continente: {pais['Continente']} | Poblacion: {pais['Poblacion']} | Superficie: {pais['Superficie']} km²")
+
+
 
 
 # FUNCION PARA MOSTRAR EL MENU
@@ -114,7 +116,8 @@ def actualizar_paises(paises):
             print(f"El pais '{nombre}' no se encuentra almacenado.")
             return
         else:
-            print(f"- Pais: {p['Nombre']} | Continente: {p['Continente']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
+            print(f"- Pais: {pais_encontrado['Nombre']} | Continente: {pais_encontrado['Continente']} | Poblacion: {pais_encontrado['Poblacion']} | Superficie: {pais_encontrado['Superficie']} km²")
+            while True:
             while True:
                 print("""
                 ¿Que dato desea actualizar?
@@ -377,7 +380,7 @@ def guardar_datos_csv(paises):
         with open(ARCHIVO_CSV, mode="w", newline="", encoding="utf-8") as archivo:
             # Definimos los encabezados exactos que usarán las claves del diccionario
             Pais = ["Nombre", "Poblacion", "Superficie", "Continente"]
-            escritor = csv.DictWriter(archivo, fieldnames=campos)
+            escritor = csv.DictWriter(archivo, fieldnames=Pais)
             
             escritor.writeheader()
             for pais in paises:
