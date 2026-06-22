@@ -90,7 +90,7 @@ def agregar_paises(paises):
             poblacion = validar_numero("Poblacion: ", permitir_cero=False)
             superficie = validar_numero("Superficie en km²: ", permitir_cero=False)
             continente = validar_texto(f"¿A que continente pertenece {nombre}?: ")
-            nuevo_pais = {"Pais": nombre, "Poblacion": poblacion, "Superficie": superficie, "Continente": continente}
+            nuevo_pais = {"Nombre": nombre, "Poblacion": poblacion, "Superficie": superficie, "Continente": continente}
             paises.append(nuevo_pais)
             print(f"¡'{nombre}' agregado con éxito al catálogo!")
             return
