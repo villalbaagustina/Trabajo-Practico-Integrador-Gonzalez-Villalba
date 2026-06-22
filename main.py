@@ -118,7 +118,6 @@ def actualizar_paises(paises):
         else:
             print(f"- Pais: {pais_encontrado['Nombre']} | Continente: {pais_encontrado['Continente']} | Poblacion: {pais_encontrado['Poblacion']} | Superficie: {pais_encontrado['Superficie']} km²")
             while True:
-            while True:
                 print("""
                 ¿Que dato desea actualizar?
                 1. Población.
