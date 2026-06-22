@@ -38,22 +38,26 @@ def buscar_paises(paises, nombre):
         return
     nombre_limpio = text = nombre.strip().capitalize()
     for h in paises:
-        if h["Pais"].strip().capitalize() == nombre_limpio:
+        if h["Nombre"].strip().capitalize() == nombre_limpio:
             return h
     return None
 # PARCIAL
 def buscar_pais_parcial(paises):
+    print("")
+    print("-"*50)
+    print("--- BUSCAR PAISES ---")
+    print("")
     if not paises:
         print("ERROR. No hay paises almacenados.")
         return
     else:
         nombre = validar_texto("Ingrese nombre o parte del nombre: ").lower()
-        resultados = [p for p in paises if nombre in p["Pais"].lower()]
+        resultados = [p for p in paises if nombre in p["Nombre"].lower()]
         if not resultados:
             print(f"ERROR. No se encontraron países que coincidan con '{nombre}'.")
         else:
             for pais in resultados:
-                print(f"- {pais['Pais']} ({pais['Continente']})")
+                print(f"- Pais: {p['Nombre']} | Continente: {p['Continente']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
 
 
 # FUNCION PARA MOSTRAR EL MENU
@@ -74,6 +78,7 @@ def menu():
 def agregar_paises(paises):
     print("")
     print("-"*50)
+    print("--- AGREGAR PAISES ---")
     print("")
     while True:
         try:
@@ -95,6 +100,7 @@ def agregar_paises(paises):
 def actualizar_paises(paises):
     print("")
     print("-"*50)
+    print("--- ACTUALIZAR PAISES ---")
     print("")
     if len(paises) == 0:
         print("")
@@ -108,13 +114,14 @@ def actualizar_paises(paises):
             print(f"El pais '{nombre}' no se encuentra almacenado.")
             return
         else:
+            print(f"- Pais: {p['Nombre']} | Continente: {p['Continente']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
             while True:
                 print("""
                 ¿Que dato desea actualizar?
                 1. Población.
                 2. Superficie.
                 """)
-                opcion = input("Ingresa una opción (1-3): ")
+                opcion = input("Ingresa una opción (1-2): ")
                 try:
                     if not opcion:
                         raise ValueError("ERROR. La opción no puede estar vacía.")
@@ -143,11 +150,10 @@ def filtrar_paises(paises):
     print("")
     print("-"*50)
     print(" --- FILTRAR PAÍSES --- ")
-    
+    print("")
     if len(paises) == 0:
         print("ERROR. No hay países almacenados para filtrar.")
         return
-
     while True:
         print("""
         ¿Por qué criterio desea filtrar?
@@ -157,46 +163,42 @@ def filtrar_paises(paises):
         4. Volver al menú principal.
         """)
         opcion = input("Ingresa una opción (1-4): ").strip()
-        
         resultados = []
         
         if opcion == "1":
             continente = validar_texto("Ingrese el continente a buscar: ").strip().lower()
             resultados = [p for p in paises if p["Continente"].lower() == continente]
-            
         elif opcion == "2":
-            print("Defina el rango de población:")
+            print("Defina el rango de población: ")
             min_pob = validar_numero("Población mínima: ")
             max_pob = validar_numero("Población máxima: ")
             resultados = [p for p in paises if min_pob <= p["Poblacion"] <= max_pob]
-            
         elif opcion == "3":
             print("Defina el rango de superficie (km²):")
             min_sup = validar_numero("Superficie mínima: ")
             max_sup = validar_numero("Superficie máxima: ")
             resultados = [p for p in paises if min_sup <= p["Superficie"] <= max_sup]
-            
         elif opcion == "4":
             print("Volviendo al menú principal...")
             break
-            
         else:
             print("ERROR. Debe ingresar una opción válida (1-4).")
             continue
             
         # Mostrar los resultados del filtro si es que se eligió la opción 1, 2 o 3
         if not resultados:
-            print("\nNo se encontraron países que coincidan con esos criterios.")
+            print("ERROR. No se encontraron países que coincidan con esos criterios.")
         else:
             print(f"\nSe encontraron {len(resultados)} resultados:")
             for p in resultados:
-                print(f"- {p['Pais']} | {p['Continente']} | Pob: {p['Poblacion']} | Sup: {p['Superficie']} km²")
+                print(f"- Pais: {p['Nombre']} | Continente: {p['Continente']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
 
 
+# Funcion para ordenar la lista como desee el cliente
 def ordenar_paises(paises):
     print("")
     print("-"*50)
-    print(" --- ORDENAR PAÍSES --- ")
+    print("--- ORDENAR PAÍSES --- ")
     if len(paises) == 0:
         print("ERROR. No hay países almacenados para ordenar.")
         return
@@ -212,14 +214,12 @@ def ordenar_paises(paises):
         
         if opcion == "1":
             # Ordena alfabéticamente por la clave "Pais"
-            paises_ordenados = sorted(paises, key=lambda x: x["Pais"])
+            paises_ordenados = sorted(paises, key=lambda x: x["Nombre"])
             print("\nPaíses ordenados por Nombre (A-Z):")
-            
         elif opcion == "2":
             # Ordena de mayor a menor población usando reverse=True
             paises_ordenados = sorted(paises, key=lambda x: x["Poblacion"], reverse=True)
             print("\nPaíses ordenados por Población (Mayor a Menor):")
-            
         elif opcion == "3":
             orden = input("¿Desea orden (A)scendente o (D)escendente?: ").strip().upper()
             if orden == 'A':
@@ -231,18 +231,16 @@ def ordenar_paises(paises):
             else:
                 print("ERROR. Debe ingresar 'A' o 'D'.")
                 continue
-                
         elif opcion == "4":
             print("Volviendo al menú principal...")
             break
-            
         else:
             print("ERROR. Debe ingresar una opción válida (1-4).")
             continue
             
         # Imprimimos los resultados si se eligió la opción 1, 2 o 3
         for p in paises_ordenados:
-            print(f"- {p['Pais']} | Pob: {p['Poblacion']} | Sup: {p['Superficie']} km²")
+            print(f"- Pais: {p['Nombre']} | Poblacion: {p['Poblacion']} | Superficie: {p['Superficie']} km²")
 
 
 # Funcion para ver cual es el pais con mayor o menor poblacion
@@ -254,8 +252,8 @@ def mayor_menor_población(paises):
             pais_mayor_poblacion = pais
         if pais["Poblacion"] < pais_menor_poblacion["Poblacion"]:
             pais_menor_poblacion = pais
-    print(f"El pais con mayor poblacion es {pais_mayor_poblacion}.")
-    print(f"El pais con menor poblacion es {pais_menor_poblacion}.")
+    print(f"El pais con mayor poblacion es {pais_mayor_poblacion['Nombre']} con {pais_mayor_poblacion['Poblacion']} habitantes.")
+    print(f"El pais con menor poblacion es {pais_menor_poblacion['Nombre']} con {pais_menor_poblacion['Poblacion']} habitantes.")
     return
 
 
@@ -362,7 +360,7 @@ def cargar_datos_csv():
             for fila in lector:
                 # Armamos el diccionario asegurando que los números sean enteros
                 pais = {
-                    "Pais": fila["Pais"].strip().capitalize(),
+                    "Nombre": fila["Nombre"].strip().capitalize(),
                     "Poblacion": int(fila["Poblacion"]),
                     "Superficie": int(fila["Superficie"]),
                     "Continente": fila["Continente"].strip().capitalize()
@@ -378,7 +376,7 @@ def guardar_datos_csv(paises):
     try:
         with open(ARCHIVO_CSV, mode="w", newline="", encoding="utf-8") as archivo:
             # Definimos los encabezados exactos que usarán las claves del diccionario
-            campos = ["Pais", "Poblacion", "Superficie", "Continente"]
+            Pais = ["Nombre", "Poblacion", "Superficie", "Continente"]
             escritor = csv.DictWriter(archivo, fieldnames=campos)
             
             escritor.writeheader()
