@@ -24,7 +24,7 @@ A través de un menú interactivo, el usuario puede:
 
 ## Enlaces Obligatorios
 
-- **Video Demostrativo:** [ Link ]
+- **Video Demostrativo:** [Ver Video](https://drive.google.com/file/d/1RqhapKlhR8MaW4GF2sf9vrQYQOcbtXSK/view?usp=sharing&t=3.415)
 - **Documentación Técnica:** [Ver documento](https://docs.google.com/document/d/1_cM9DsI1de9MvCLBAgD8jZe3vdouknNHrSfwewtuVYI/edit?usp=sharing)
 
 ---
